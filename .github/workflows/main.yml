@@ -1,0 +1,19 @@
+name: Deploy Portfólio para Azure
+
+on:
+  push:
+    branches:
+      - main  # Ou o nome da sua branch principal (ex: master)
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout do código
+      uses: actions/checkout@v3
+
+    - name: Upload para o Azure Storage
+      uses: Azure/cli@v1
+      with:
+        inlineScript: |
+          az storage blob upload-batch --account-name armazenamentositefabio --auth-mode key --connection-string "${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}" -d '$web' -s .
