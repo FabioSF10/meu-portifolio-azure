@@ -1,126 +1,100 @@
 <html><head></head>
 
-<body>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const btnChat = document.getElementById("btn-chat");
-    const chatInput = document.getElementById("chat-input");
+<!-- Estrutura do Chat -->
+<div id="chat-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+    <!-- Botão para abrir o chat -->
+    <button id="chat-toggle" style="background-color: #0078d4; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px;">
+        💬
+    </button>
 
-    if (btnChat) btnChat.addEventListener("click", enviarMensagemIA);
-    if (chatInput) {
-        chatInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") enviarMensagemIA();
-        });
-    }
-});
-
-function addMensagem(texto, tipo) {
-    const display = document.getElementById('chat-display');
-    const div = document.createElement('div');
-    
-    div.style.padding = "10px";
-    div.style.borderRadius = "8px";
-    div.style.marginBottom = "10px";
-    div.style.maxWidth = "85%";
-    div.style.fontSize = "0.9em";
-    div.style.lineHeight = "1.4";
-    div.style.display = "block";
-    div.style.clear = "both";
-
-    if (tipo === 'user') {
-        div.style.background = "#ff9900";
-        div.style.color = "#232f3e";
-        div.style.marginLeft = "auto";
-        div.style.borderBottomRightRadius = "2px";
-        div.innerHTML = `<strong>Você:</strong><br>${texto}`;
-    } else {
-        div.style.background = "#1e293b";
-        div.style.color = "white";
-        div.style.marginRight = "auto";
-        div.style.borderLeft = "3px solid #ff9900";
-        div.style.borderBottomLeftRadius = "2px";
-        div.innerHTML = `<strong>IA:</strong><br>${texto}`;
-    }
-
-    display.appendChild(div);
-    display.scrollTop = display.scrollHeight;
-}
-
-async function enviarMensagemIA() {
-    const input = document.getElementById('chat-input');
-    const btn = document.getElementById('btn-chat');
-    const display = document.getElementById('chat-display');
-
-    const msg = input.value.trim();
-    if (!msg) return;
-
-    addMensagem(msg, "user");
-    input.value = "";
-    btn.disabled = true;
-
-    const typingIndicator = document.createElement('div');
-    typingIndicator.id = "typing";
-    typingIndicator.style.color = "#ff9900";
-    typingIndicator.style.fontSize = "0.8em";
-    typingIndicator.style.padding = "5px";
-    typingIndicator.innerHTML = "<em>Processando...</em>";
-    display.appendChild(typingIndicator);
-    display.scrollTop = display.scrollHeight;
-
-    try {
-        const res = await fetch("https://9u6eokphxh.execute-api.us-east-1.amazonaws.com/prod/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: msg })
-        });
-
-        const data = await res.json();
-        const indicator = document.getElementById("typing");
-        if (indicator) indicator.remove();
-
-        addMensagem(data.response || "Sem resposta da IA.", "ia");
-
-    } catch (e) {
-        const indicator = document.getElementById("typing");
-        if (indicator) indicator.remove();
-        addMensagem("Erro ao conectar com a nuvem.", "ia");
-    } finally {
-        btn.disabled = false;
-        input.focus();
-    }
-}
-</script>
-<section>
-    <div class="project-grid">
-        <div class="content">
-            <h2><i class="fas fa-robot"></i> 01. API de IA Generativa</h2>
-            <h3>Integração Serverless Híbrida (AWS & Azure)</h3>
-            <p>Este projeto demonstra a comunicação segura e eficiente entre provedores de nuvem distintos para entregar inteligência artificial como serviço.</p>
-            <ul>
-                <li><strong>Gateway de API:</strong> Exposição de endpoint seguro via AWS API Gateway.</li>
-                <li><strong>Processamento:</strong> AWS Lambda atuando como middleware para orquestração de chamadas.</li>
-                <li><strong>Inteligência:</strong> Consumo de modelos LLM via Azure OpenAI Service (Foundry).</li>
-                <li><strong>Arquitetura:</strong> Design desacoplado focado em baixa latência e escalabilidade.</li>
-            </ul>
-            <a href="https://github.com/FabioSF10/meu-portfolio-aws" target="_blank" style="color: var(--aws-orange); font-weight: bold; text-decoration: none;">Repositório do Projeto →</a>
+    <!-- Janela de Conversa (escondida por padrão) -->
+    <div id="chat-window" style="display: none; background: white; width: 350px; height: 450px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); flex-direction: column; overflow: hidden; position: absolute; bottom: 80px; right: 0;">
+        <!-- Cabeçalho -->
+        <div style="background: #0078d4; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between;">
+            <span>Assistente IA Fabio</span>
+            <button id="close-chat" style="background: transparent; border: none; color: white; cursor: pointer;">✕</button>
         </div>
-        <div class="media">
-            <div class="widget chat-box">
-                <h3 style="color: var(--aws-orange); text-align: center; margin-top: 0;">🤖 Fabio-IA Explorer</h3>
-                <p style="font-size: 0.8em; text-align: center; margin-top: -10px; opacity: 0.7;">Integração em tempo real via Lambda</p>
-                <div id="chat-display" style="height: 250px; overflow-y: auto; background: #020617; border-radius: 8px; padding: 15px; margin-bottom: 10px; font-size: 0.9em; border: 1px solid #334155;">
-                    <div class="msg ia" style="background: #1e293b; padding: 8px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--aws-orange);">
-                        Olá! Sou uma IA conectada via AWS e Azure. Como posso ajudar seu dia hoje?
-                    </div>
-                </div>
-                <div class="chat-input-area" style="display: flex; gap: 8px;">
-                    <input type="text" id="chat-input" placeholder="Envie um comando para a IA..." style="margin-bottom: 0;">
-                    <button id="btn-chat" style="width: 60px; flex-shrink: 0;">➤</button>
-                </div>
+        
+        <!-- Área de Mensagens -->
+        <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f4f4f4;">
+            <div style="background: #e1e1e1; padding: 8px 12px; border-radius: 15px; align-self: flex-start; max-width: 80%; font-size: 14px;">
+                Olá! Como posso ajudar você hoje?
             </div>
         </div>
+
+        <!-- Input de Texto -->
+        <div style="padding: 10px; border-top: 1px solid #ddd; display: flex; gap: 5px;">
+            <input type="text" id="chat-input" placeholder="Digite sua pergunta..." style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 5px; outline: none;">
+            <button id="send-btn" style="background: #0078d4; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Enviar</button>
+        </div>
     </div>
-</section>
+</div>
+
+<script>
+    const chatToggle = document.getElementById('chat-toggle');
+    const chatWindow = document.getElementById('chat-window');
+    const closeChat = document.getElementById('close-chat');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatMessages = document.getElementById('chat-messages');
+
+    // Abre/Fecha o chat
+    chatToggle.onclick = () => chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
+    closeChat.onclick = () => chatWindow.style.display = 'none';
+
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        // Adiciona mensagem do usuário na tela
+        addMessage(text, 'user');
+        chatInput.value = '';
+
+        // Feedback de "Pensando..."
+        const loadingDiv = addMessage('...', 'ai');
+
+        try {
+            // --- AQUI VOCÊ CONECTA COM SUA AZURE FUNCTION ---
+            const response = await fetch('SUA_URL_DA_AZURE_FUNCTION_AQUI', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt: text })
+            });
+            
+            const data = await response.json();
+            loadingDiv.innerText = data.answer; // Ajuste conforme o JSON de retorno da sua função
+        } catch (error) {
+            loadingDiv.innerText = "Erro ao conectar com a IA.";
+            console.error(error);
+        }
+    }
+
+    function addMessage(text, sender) {
+        const div = document.createElement('div');
+        div.innerText = text;
+        div.style.padding = "8px 12px";
+        div.style.borderRadius = "15px";
+        div.style.maxWidth = "80%";
+        div.style.fontSize = "14px";
+        
+        if (sender === 'user') {
+            div.style.alignSelf = "flex-end";
+            div.style.background = "#0078d4";
+            div.style.color = "white";
+        } else {
+            div.style.alignSelf = "flex-start";
+            div.style.background = "#e1e1e1";
+            div.style.color = "#333";
+        }
+        
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        return div;
+    }
+
+    sendBtn.onclick = sendMessage;
+    chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
+</script>
 
 </body>
 </html>
