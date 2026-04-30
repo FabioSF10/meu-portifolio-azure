@@ -1,100 +1,238 @@
-<html><head></head>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Portfólio - Fabio</title>
+    <style>
+        /* Estilos do Site */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
 
-<!-- Estrutura do Chat -->
-<div id="chat-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    <!-- Botão para abrir o chat -->
-    <button id="chat-toggle" style="background-color: #0078d4; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 24px;">
-        💬
-    </button>
+        /* Container do Chat Flutuante */
+        #chat-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
 
-    <!-- Janela de Conversa (escondida por padrão) -->
-    <div id="chat-window" style="display: none; background: white; width: 350px; height: 450px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); flex-direction: column; overflow: hidden; position: absolute; bottom: 80px; right: 0;">
-        <!-- Cabeçalho -->
-        <div style="background: #0078d4; color: white; padding: 15px; font-weight: bold; display: flex; justify-content: space-between;">
-            <span>Assistente IA Fabio</span>
-            <button id="close-chat" style="background: transparent; border: none; color: white; cursor: pointer;">✕</button>
-        </div>
-        
-        <!-- Área de Mensagens -->
-        <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f4f4f4;">
-            <div style="background: #e1e1e1; padding: 8px 12px; border-radius: 15px; align-self: flex-start; max-width: 80%; font-size: 14px;">
-                Olá! Como posso ajudar você hoje?
+        /* Botão Redondo (Ícone) */
+        #chat-toggle {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 28px;
+            transition: transform 0.2s;
+        }
+
+        #chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Janela do Chat */
+        #chat-window {
+            display: none; /* Começa escondido */
+            flex-direction: column;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            overflow: hidden;
+        }
+
+        /* Cabeçalho do Chat */
+        #chat-header {
+            background-color: #0078d4;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* Área de Mensagens */
+        #chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #f9f9f9;
+        }
+
+        /* Balões de Mensagem */
+        .message {
+            padding: 10px 14px;
+            border-radius: 18px;
+            max-width: 80%;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: #0078d4;
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .ai-message {
+            align-self: flex-start;
+            background-color: #e9e9eb;
+            color: #333;
+            border-bottom-left-radius: 2px;
+        }
+
+        /* Área de Digitação */
+        #chat-footer {
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 8px;
+        }
+
+        #chat-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        #send-btn {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #send-btn:hover {
+            background-color: #005a9e;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Conteúdo do seu Portfólio aqui -->
+    <div style="padding: 50px; text-align: center;">
+        <h1>Bem-vindo ao meu Portfólio Azure</h1>
+        <p>O chat de IA está no canto inferior direito.</p>
+    </div>
+
+    <!-- WIDGET DE CHAT -->
+    <div id="chat-wrapper">
+        <button id="chat-toggle" title="Abrir Chat">💬</button>
+
+        <div id="chat-window">
+            <div id="chat-header">
+                <span>Assistente Fabio IA</span>
+                <button id="close-chat" style="background:none; border:none; color:white; cursor:pointer; font-size:18px;">✕</button>
+            </div>
+            
+            <div id="chat-messages">
+                <div class="message ai-message">Olá! Eu sou a IA do Fabio. Como posso te ajudar hoje?</div>
+            </div>
+
+            <div id="chat-footer">
+                <input type="text" id="chat-input" placeholder="Pergunte algo...">
+                <button id="send-btn">➤</button>
             </div>
         </div>
-
-        <!-- Input de Texto -->
-        <div style="padding: 10px; border-top: 1px solid #ddd; display: flex; gap: 5px;">
-            <input type="text" id="chat-input" placeholder="Digite sua pergunta..." style="flex: 1; padding: 8px; border: 1px solid #ddd; border-radius: 5px; outline: none;">
-            <button id="send-btn" style="background: #0078d4; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Enviar</button>
-        </div>
     </div>
-</div>
 
-<script>
-    const chatToggle = document.getElementById('chat-toggle');
-    const chatWindow = document.getElementById('chat-window');
-    const closeChat = document.getElementById('close-chat');
-    const chatInput = document.getElementById('chat-input');
-    const sendBtn = document.getElementById('send-btn');
-    const chatMessages = document.getElementById('chat-messages');
+    <script>
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatWindow = document.getElementById('chat-window');
+        const closeChat = document.getElementById('close-chat');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatMessages = document.getElementById('chat-messages');
 
-    // Abre/Fecha o chat
-    chatToggle.onclick = () => chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
-    closeChat.onclick = () => chatWindow.style.display = 'none';
+        // Função para abrir/fechar janela
+        chatToggle.onclick = () => {
+            chatWindow.style.display = 'flex';
+            chatToggle.style.display = 'none';
+        };
 
-    async function sendMessage() {
-        const text = chatInput.value.trim();
-        if (!text) return;
+        closeChat.onclick = () => {
+            chatWindow.style.display = 'none';
+            chatToggle.style.display = 'block';
+        };
 
-        // Adiciona mensagem do usuário na tela
-        addMessage(text, 'user');
-        chatInput.value = '';
-
-        // Feedback de "Pensando..."
-        const loadingDiv = addMessage('...', 'ai');
-
-        try {
-            // --- AQUI VOCÊ CONECTA COM SUA AZURE FUNCTION ---
-            const response = await fetch('SUA_URL_DA_AZURE_FUNCTION_AQUI', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ prompt: text })
-            });
+        // Função para adicionar balões na tela
+        function addMessage(text, sender) {
+            const div = document.createElement('div');
+            div.classList.add('message');
+            div.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+            div.innerText = text;
+            chatMessages.appendChild(div);
             
-            const data = await response.json();
-            loadingDiv.innerText = data.answer; // Ajuste conforme o JSON de retorno da sua função
-        } catch (error) {
-            loadingDiv.innerText = "Erro ao conectar com a IA.";
-            console.error(error);
+            // Scroll automático para o final
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return div;
         }
-    }
 
-    function addMessage(text, sender) {
-        const div = document.createElement('div');
-        div.innerText = text;
-        div.style.padding = "8px 12px";
-        div.style.borderRadius = "15px";
-        div.style.maxWidth = "80%";
-        div.style.fontSize = "14px";
-        
-        if (sender === 'user') {
-            div.style.alignSelf = "flex-end";
-            div.style.background = "#0078d4";
-            div.style.color = "white";
-        } else {
-            div.style.alignSelf = "flex-start";
-            div.style.background = "#e1e1e1";
-            div.style.color = "#333";
+        async function handleChat() {
+            const prompt = chatInput.value.trim();
+            if (!prompt) return;
+
+            addMessage(prompt, 'user');
+            chatInput.value = '';
+
+            // Balão de carregamento
+            const loadingMsg = addMessage('Pensando...', 'ai');
+
+            try {
+                // CHAME SUA AZURE FUNCTION AQUI
+                // Exemplo: https://sua-funcao.azurewebsites.net/api/ChatTrigger
+                const response = await fetch('SUA_URL_DA_AZURE_FUNCTION_AQUI', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: prompt })
+                });
+
+                if (!response.ok) throw new Error('Erro na resposta');
+
+                const data = await response.json();
+                
+                // Ajuste 'data.reply' conforme o nome do campo que sua função retorna
+                loadingMsg.innerText = data.reply || data.answer || "Recebi sua mensagem!";
+
+            } catch (error) {
+                loadingMsg.innerText = "Ops! Tive um problema ao conectar. Tente novamente.";
+                console.error('Erro:', error);
+            }
         }
-        
-        chatMessages.appendChild(div);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        return div;
-    }
 
-    sendBtn.onclick = sendMessage;
-    chatInput.onkeypress = (e) => { if (e.key === 'Enter') sendMessage(); };
-</script>
+        // Eventos de clique e teclado
+        sendBtn.onclick = handleChat;
+        chatInput.onkeypress = (e) => {
+            if (e.key === 'Enter') handleChat();
+        };
+    </script>
 
 </body>
 </html>
