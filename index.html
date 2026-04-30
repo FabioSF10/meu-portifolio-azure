@@ -3,236 +3,562 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Portfólio - Fabio</title>
+    <title>Fabio Figueiredo | Cloud Infrastructure Analyst | Azure & AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos do Site */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 0;
+        :root { 
+            --azure-blue: #0078d4; 
+            --azure-dark: #002050; 
+            --azure-light: #50e6ff;
+            --primary: #0078d4; 
+            --bg: #0b1120; 
+            --card-bg: #111827;
+            --text: #f1f5f9; 
         }
 
-        /* Container do Chat Flutuante */
-        #chat-wrapper {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; }
+        
+        /* Hero Section Azure */
+        header {
+            position: relative; 
+            background: #020617; 
+            padding: 100px 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--azure-blue);
+            overflow: hidden; 
         }
 
-        /* Botão Redondo (Ícone) */
-        #chat-toggle {
-            background-color: #0078d4;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            font-size: 28px;
-            transition: transform 0.2s;
-        }
-
-        #chat-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        /* Janela do Chat */
-        #chat-window {
-            display: none; /* Começa escondido */
-            flex-direction: column;
-            width: 350px;
-            height: 500px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+        /* Camada da Imagem de Fundo */
+        header::before {
+            content: "";
             position: absolute;
-            bottom: 80px;
-            right: 0;
-            overflow: hidden;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-image: url('https://raw.githubusercontent.com/FabioSF10/meu-portfolio-aws/main/fundo-index.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: 1;
         }
 
-        /* Cabeçalho do Chat */
-        #chat-header {
-            background-color: #0078d4;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
+        /* Camada de Gradiente Azure */
+        header::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0, 32, 80, 0.9) 0%, rgba(2, 6, 23, 0.9) 100%);
+            z-index: 2;
         }
 
-        /* Área de Mensagens */
-        #chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background-color: #f9f9f9;
+        header h1, header .subtitle, header .bio, header .cert-container, header .nav-links {
+            position: relative;
+            z-index: 3;
         }
 
-        /* Balões de Mensagem */
-        .message {
-            padding: 10px 14px;
-            border-radius: 18px;
-            max-width: 80%;
-            font-size: 14px;
-            line-height: 1.4;
+        header h1 { margin: 0; font-size: 3.2em; font-weight: 800; letter-spacing: -1px; color: #fff; }
+        header .subtitle { color: var(--azure-light); font-size: 1.4em; font-weight: 500; margin: 10px 0; }
+        header .bio { max-width: 750px; margin: 20px auto; opacity: 0.9; font-size: 1.1em; color: #cbd5e1; }
+        
+        .nav-links { margin-top: 30px; }
+        .nav-links a { 
+            color: white; text-decoration: none; margin: 0 10px; font-weight: 600; 
+            background: rgba(255,255,255,0.05); padding: 12px 25px; border-radius: 8px; 
+            transition: 0.3s; border: 1px solid rgba(0, 120, 212, 0.3);
+        }
+        .nav-links a:hover { background: var(--azure-blue); border-color: var(--azure-light); color: white; }
+
+        /* Badges de Certificação */
+        .cert-container { display: flex; justify-content: center; gap: 20px; margin-top: 40px; flex-wrap: wrap; }
+        .cert-badge { 
+            background: #fff; color: var(--azure-dark); padding: 10px 20px; border-radius: 8px; 
+            font-weight: bold; display: flex; align-items: center; gap: 10px; font-size: 0.9em;
+            box-shadow: 0 4px 15px rgba(0, 120, 212, 0.4);
         }
 
-        .user-message {
-            align-self: flex-end;
-            background-color: #0078d4;
-            color: white;
-            border-bottom-right-radius: 2px;
-        }
+        section { padding: 80px 10%; border-bottom: 1px solid #1e293b; }
+        .dark-bg { background: var(--card-bg); }
+        
+        h2 { font-size: 2em; margin-bottom: 40px; display: flex; align-items: center; gap: 15px; }
+        h2 i { color: var(--azure-blue); }
 
-        .ai-message {
-            align-self: flex-start;
-            background-color: #e9e9eb;
-            color: #333;
-            border-bottom-left-radius: 2px;
+        .content h3 { color: var(--azure-light); margin-top: 0; }
+        .widget { background: #0b1120; padding: 30px; border-radius: 15px; border: 1px solid var(--azure-blue); }
+        
+        button { 
+            background: var(--azure-blue); color: white; border: none; padding: 15px; 
+            font-weight: bold; cursor: pointer; border-radius: 8px; width: 100%; 
+            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; 
         }
+        button:hover { background: #005a9e; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,120,212,0.4); }
 
-        /* Área de Digitação */
-        #chat-footer {
-            padding: 15px;
-            border-top: 1px solid #eee;
-            display: flex;
-            gap: 8px;
-        }
-
-        #chat-input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            outline: none;
-            font-size: 14px;
-        }
-
-        #send-btn {
-            background-color: #0078d4;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 35px;
-            height: 35px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #send-btn:hover {
-            background-color: #005a9e;
-        }
+        footer { background: #020617; text-align: center; padding: 50px; color: #64748b; }
+        .social-footer a { color: var(--text); font-size: 1.5em; margin: 0 15px; transition: 0.3s; }
+        .social-footer a:hover { color: var(--azure-light); }
     </style>
 </head>
 <body>
 
-    <!-- Conteúdo do seu Portfólio aqui -->
-    <div style="padding: 50px; text-align: center;">
-        <h1>Bem-vindo ao meu Portfólio Azure</h1>
-        <p>O chat de IA está no canto inferior direito.</p>
+<header>
+    <h1>Fabio Figueiredo</h1>
+    <p class="subtitle">Infraestrutura de TI | Azure Cloud | IA Generativa | Redes & AD</p>
+    <p class="bio">
+        Analista de Infraestrutura com mais de 10 anos de jornada em suporte técnico e ambientes corporativos complexos. 
+        Especialista em ecossistemas Microsoft (Active Directory, Windows Server) e redes.
+        <br><br>
+        Atualmente escalando soluções em <b>Microsoft Azure</b>, integrando automação com IA Generativa e serviços de Cloud (Blob Storage, Functions, App Services). 
+        Focado em modernização de processos, segurança de dados e arquitetura de nuvem resiliente.
+    </p>
+    
+   <div class="cert-container">
+    <a href="https://www.credly.com/badges/2abfd1ae-11af-4dbc-befb-40b48389afe7/public_url" target="_blank" style="text-decoration: none;">
+        <div class="cert-badge" style="cursor: pointer; display: flex; align-items: center; gap: 15px; background: white; padding: 10px 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3); transition: 0.3s; border: 1px solid transparent;" 
+             onmouseover="this.style.transform='translateY(-3px)'; this.style.borderColor='#ff9900'" 
+             onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='transparent'">
+            <i class="fab fa-aws fa-2x" style="color: #232f3e;"></i>
+            <div style="text-align: left; color: #232f3e;">
+                <span style="display: block; font-size: 0.7em; opacity: 0.7; font-weight: bold;">VALIDAR</span>
+                <span style="font-weight: 800; font-size: 0.9em;">Certified Cloud Practitioner</span>
+            </div>
+            <i class="fas fa-external-link-alt" style="font-size: 0.7em; color: #232f3e; opacity: 0.3;"></i>
+        </div>
+    </a>
+
+    <div class="cert-badge" style="opacity: 0.6; background: #e2e8f0; display: flex; align-items: center; gap: 15px; padding: 10px 20px; border-radius: 8px;">
+        <i class="fas fa-graduation-cap" style="color: #232f3e;"></i>
+        <span style="color: #232f3e; font-size: 0.9em; font-weight: bold;">Solutions Architect Associate (Em andamento)</span>
     </div>
+</div>
 
-    <!-- WIDGET DE CHAT -->
-    <div id="chat-wrapper">
-        <button id="chat-toggle" title="Abrir Chat">💬</button>
+<div class="nav-links">
+    <a href="https://www.linkedin.com/in/fabio-figueiredo-5601041b2/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+    <a href="https://github.com/FabioSF10/meu-portfolio-aws" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+</div>
+</header>
 
-        <div id="chat-window">
-            <div id="chat-header">
-                <span>Assistente Fabio IA</span>
-                <button id="close-chat" style="background:none; border:none; color:white; cursor:pointer; font-size:18px;">✕</button>
-            </div>
-            
-            <div id="chat-messages">
-                <div class="message ai-message">Olá! Eu sou a IA do Fabio. Como posso te ajudar hoje?</div>
-            </div>
 
-            <div id="chat-footer">
-                <input type="text" id="chat-input" placeholder="Pergunte algo...">
-                <button id="send-btn">➤</button>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const btnChat = document.getElementById("btn-chat");
+    const chatInput = document.getElementById("chat-input");
+
+    if (btnChat) btnChat.addEventListener("click", enviarMensagemIA);
+    if (chatInput) {
+        chatInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") enviarMensagemIA();
+        });
+    }
+});
+
+function addMensagem(texto, tipo) {
+    const display = document.getElementById('chat-display');
+    const div = document.createElement('div');
+    
+    div.style.padding = "10px";
+    div.style.borderRadius = "8px";
+    div.style.marginBottom = "10px";
+    div.style.maxWidth = "85%";
+    div.style.fontSize = "0.9em";
+    div.style.lineHeight = "1.4";
+    div.style.display = "block";
+    div.style.clear = "both";
+
+    if (tipo === 'user') {
+        div.style.background = "#ff9900";
+        div.style.color = "#232f3e";
+        div.style.marginLeft = "auto";
+        div.style.borderBottomRightRadius = "2px";
+        div.innerHTML = `<strong>Você:</strong><br>${texto}`;
+    } else {
+        div.style.background = "#1e293b";
+        div.style.color = "white";
+        div.style.marginRight = "auto";
+        div.style.borderLeft = "3px solid #ff9900";
+        div.style.borderBottomLeftRadius = "2px";
+        div.innerHTML = `<strong>IA:</strong><br>${texto}`;
+    }
+
+    display.appendChild(div);
+    display.scrollTop = display.scrollHeight;
+}
+
+async function enviarMensagemIA() {
+    const input = document.getElementById('chat-input');
+    const btn = document.getElementById('btn-chat');
+    const display = document.getElementById('chat-display');
+
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    addMensagem(msg, "user");
+    input.value = "";
+    btn.disabled = true;
+
+    const typingIndicator = document.createElement('div');
+    typingIndicator.id = "typing";
+    typingIndicator.style.color = "#ff9900";
+    typingIndicator.style.fontSize = "0.8em";
+    typingIndicator.style.padding = "5px";
+    typingIndicator.innerHTML = "<em>Processando...</em>";
+    display.appendChild(typingIndicator);
+    display.scrollTop = display.scrollHeight;
+
+    try {
+        const res = await fetch("https://9u6eokphxh.execute-api.us-east-1.amazonaws.com/prod/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: msg })
+        });
+
+        const data = await res.json();
+        const indicator = document.getElementById("typing");
+        if (indicator) indicator.remove();
+
+        addMensagem(data.response || "Sem resposta da IA.", "ia");
+
+    } catch (e) {
+        const indicator = document.getElementById("typing");
+        if (indicator) indicator.remove();
+        addMensagem("Erro ao conectar com a nuvem.", "ia");
+    } finally {
+        btn.disabled = false;
+        input.focus();
+    }
+}
+const urlMural = 'https://inz3drxxdn7eswrsl55c4hmj2u0egmgd.lambda-url.us-east-1.on.aws/';
+
+// Esta linha faz o mural carregar assim que o site abre
+document.addEventListener("DOMContentLoaded", carregarMensagens);
+
+async function carregarMensagens() {
+    const container = document.getElementById('mensagens-container');
+    if (!container) return;
+
+    try {
+        const res = await fetch(urlMural);
+        const mensagens = await res.json();
+        container.innerHTML = ""; 
+
+        if (mensagens.length === 0) {
+            container.innerHTML = "<p style='font-size: 0.8em; opacity: 0.5;'>Nenhuma mensagem ainda.</p>";
+            return;
+        }
+
+        mensagens.forEach(msg => {
+            const item = document.createElement('div');
+            item.style.background = "#1e293b";
+            item.style.padding = "10px";
+            item.style.borderRadius = "5px";
+            item.style.marginBottom = "10px";
+            item.style.borderLeft = "3px solid #ff9900";
+            item.innerHTML = `<strong>${msg.nick}:</strong> <p style="margin: 5px 0 0 0; font-size: 0.9em;">${msg.frase}</p>`;
+            container.appendChild(item);
+        });
+    } catch (e) { 
+        container.innerHTML = "<p style='color: red;'>Erro ao carregar mural.</p>"; 
+    }
+}
+
+async function enviarFrase() {
+    const nickInput = document.getElementById('nick');
+    const fraseInput = document.getElementById('frase');
+    const btn = event.target;
+
+    if (!nickInput.value || !fraseInput.value) {
+        alert("Preencha nome e mensagem.");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Enviando...";
+
+    try {
+        await fetch(urlMural, {
+            method: 'POST',
+            body: JSON.stringify({ nick: nickInput.value, frase: fraseInput.value })
+        });
+        
+        nickInput.value = "";
+        fraseInput.value = "";
+        await carregarMensagens();
+    } catch (e) { 
+        alert("Erro ao enviar"); 
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Publicar no Mural";
+    }
+}
+
+    function copiarEmail() {
+    const email = "fabio.sf10@hotmail.com";
+    const aviso = document.getElementById("aviso-copiado");
+    const icone = document.getElementById("icone-email");
+
+    // Método moderno
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(email).then(() => mostrarSucesso(aviso, icone));
+    } else {
+        // Método reserva (Fallback) para casos onde o moderno falha
+        const inputTemporario = document.createElement("input");
+        inputTemporario.value = email;
+        document.body.appendChild(inputTemporario);
+        inputTemporario.select();
+        try {
+            document.execCommand("copy");
+            mostrarSucesso(aviso, icone);
+        } catch (err) {
+            console.error("Erro ao copiar", err);
+        }
+        document.body.removeChild(inputTemporario);
+    }
+}
+
+function mostrarSucesso(aviso, icone) {
+    aviso.style.display = "block";
+    icone.style.color = "#ff9900";
+
+    setTimeout(() => {
+        aviso.style.display = "none";
+        icone.style.color = "";
+    }, 2000);
+}
+
+async function chamarLambda() {
+    const display = document.getElementById('cpf-display');
+    const btn = document.getElementById('btn-gerar');
+    
+    // Sua URL real da Lambda
+    const urlMural = 'https://l56buoq6dljc53d4orun63jq6q0xxelu.lambda-url.us-east-1.on.aws';
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Gerando...';
+    display.style.opacity = "0.5";
+
+    try {
+        const res = await fetch(urlMural);
+        const dados = await res.json();
+        
+        // Exibe o CPF que vem da sua função Python
+        display.innerText = dados.cpf || dados; 
+        display.style.color = "white";
+    } catch (e) {
+        console.error("Erro:", e);
+        display.innerText = "Erro na API";
+        display.style.color = "#ff4444";
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-sync"></i> Gerar Novo CPF';
+        display.style.opacity = "1";
+    }
+}
+</script>
+
+
+
+
+<section>
+    <div class="project-grid">
+        <div class="content">
+            <h2><i class="fas fa-robot"></i> 01. API de IA Generativa</h2>
+            <h3>Integração Serverless Híbrida (AWS & Azure)</h3>
+            <p>Este projeto demonstra a comunicação segura e eficiente entre provedores de nuvem distintos para entregar inteligência artificial como serviço.</p>
+            <ul>
+                <li><strong>Gateway de API:</strong> Exposição de endpoint seguro via AWS API Gateway.</li>
+                <li><strong>Processamento:</strong> AWS Lambda atuando como middleware para orquestração de chamadas.</li>
+                <li><strong>Inteligência:</strong> Consumo de modelos LLM via Azure OpenAI Service (Foundry).</li>
+                <li><strong>Arquitetura:</strong> Design desacoplado focado em baixa latência e escalabilidade.</li>
+            </ul>
+            <a href="https://github.com/FabioSF10/meu-portfolio-aws/blob/main/API-de-IA-Generativa/README.md" target="_blank" style="color: var(--aws-orange); font-weight: bold; text-decoration: none;">Repositório do Projeto →</a>
+        </div>
+        <div class="media">
+            <div class="widget chat-box">
+                <h3 style="color: var(--aws-orange); text-align: center; margin-top: 0;">🤖 Fabio-IA Explorer</h3>
+                <p style="font-size: 0.8em; text-align: center; margin-top: -10px; opacity: 0.7;">Integração em tempo real via Lambda</p>
+                <div id="chat-display" style="height: 250px; overflow-y: auto; background: #020617; border-radius: 8px; padding: 15px; margin-bottom: 10px; font-size: 0.9em; border: 1px solid #334155;">
+                    <div class="msg ia" style="background: #1e293b; padding: 8px; border-radius: 8px; margin-bottom: 10px; border-left: 3px solid var(--aws-orange);">
+                        Olá! Sou uma IA conectada via AWS e Azure. Como posso ajudar seu dia hoje?
+                    </div>
+                </div>
+                <div class="chat-input-area" style="display: flex; gap: 8px;">
+                    <input type="text" id="chat-input" placeholder="Envie um comando para a IA..." style="margin-bottom: 0;">
+                    <button id="btn-chat" style="width: 60px; flex-shrink: 0;">➤</button>
+                </div>
             </div>
         </div>
     </div>
+</section>
 
-    <script>
-        const chatToggle = document.getElementById('chat-toggle');
-        const chatWindow = document.getElementById('chat-window');
-        const closeChat = document.getElementById('close-chat');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatMessages = document.getElementById('chat-messages');
-
-        // Função para abrir/fechar janela
-        chatToggle.onclick = () => {
-            chatWindow.style.display = 'flex';
-            chatToggle.style.display = 'none';
-        };
-
-        closeChat.onclick = () => {
-            chatWindow.style.display = 'none';
-            chatToggle.style.display = 'block';
-        };
-
-        // Função para adicionar balões na tela
-        function addMessage(text, sender) {
-            const div = document.createElement('div');
-            div.classList.add('message');
-            div.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
-            div.innerText = text;
-            chatMessages.appendChild(div);
+<section class="dark-bg">
+    <div class="project-grid" style="direction: rtl;">
+        <div class="content" style="direction: ltr;">
+            <h2><i class="fas fa-server"></i> 02. Infraestrutura Modernizada</h2>
+            <h3>Pipeline de Deploy Automático</h3>
+            <p>Migração estratégica de aplicações para infraestrutura nativa AWS, eliminando intermediários e reduzindo latência.</p>
             
-            // Scroll automático para o final
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            return div;
-        }
+            <div style="display: flex; align-items: center; gap: 15px; margin: 25px 0; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid #334155;">
+                <div style="text-align: center; flex: 1;">
+                    <i class="fab fa-github fa-2x" style="color: white;"></i>
+                    <p style="font-size: 0.7em; margin-top: 5px;">Code</p>
+                </div>
+                <i class="fas fa-arrow-right" style="opacity: 0.5;"></i>
+                <div style="text-align: center; flex: 1;">
+                    <i class="fas fa-cogs fa-2x" style="color: var(--aws-orange);"></i>
+                    <p style="font-size: 0.7em; margin-top: 5px;">Actions</p>
+                </div>
+                <i class="fas fa-arrow-right" style="opacity: 0.5;"></i>
+                <div style="text-align: center; flex: 1;">
+                    <i class="fas fa-box-open fa-2x" style="color: #3498db;"></i>
+                    <p style="font-size: 0.7em; margin-top: 5px;">S3 Bucket</p>
+                </div>
+            </div>
 
-        async function handleChat() {
-            const prompt = chatInput.value.trim();
-            if (!prompt) return;
+            <ul>
+                <li><strong>S3:</strong> Hospedagem estática com 99.9% de disponibilidade.</li>
+                <li><strong>CloudFront:</strong> CDN global para entrega de conteúdo ultra-rápida.</li>
+                <li><strong>Otimização:</strong> Redução de custos ao centralizar a stack na AWS.</li>
+            </ul>
+             <a href="https://github.com/FabioSF10/meu-portfolio-aws/tree/main/Hospedagem-S3-Deploy-Automatizado" target="_blank" style="color: var(--aws-orange); font-weight: bold; text-decoration: none;">Repositório do Projeto →</a>
+        </div>
 
-            addMessage(prompt, 'user');
-            chatInput.value = '';
+        <div class="media" style="direction: ltr;">
+            <div style="background: #0f172a; border-radius: 15px; overflow: hidden; border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div style="background: #1e293b; padding: 10px 15px; display: flex; gap: 8px;">
+                    <span style="width: 10px; height: 10px; background: #ff5f56; border-radius: 50%;"></span>
+                    <span style="width: 10px; height: 10px; background: #ffbd2e; border-radius: 50%;"></span>
+                    <span style="width: 10px; height: 10px; background: #27c93f; border-radius: 50%;"></span>
+                </div>
+                <div style="padding: 30px; text-align: center;">
+                    <i class="fas fa-globe-americas fa-4x" style="color: var(--aws-orange); margin-bottom: 20px; opacity: 0.8;"></i>
+                    <h4 style="margin: 0 0 10px 0;">Endpoint Público</h4>
+                    <p style="font-size: 0.85em; opacity: 0.7; margin-bottom: 20px;">Este ambiente é atualizado automaticamente via GitHub Actions. Qualquer alteração no código fonte reflete em tempo real nesta hospedagem S3.</p>
+                    
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-            // Balão de carregamento
-            const loadingMsg = addMessage('Pensando...', 'ai');
+<section>
+    <div class="project-grid">
+        <div class="content">
+            <h2><i class="fas fa-database"></i> 03. Mural Serverless (NoSQL)</h2>
+            <p>Sistema de persistência de dados em tempo real utilizando banco de dados não-relacional.</p>
+            <ul>
+                <li><strong>API Gateway:</strong> Gerenciamento de rotas e segurança.</li>
+                <li><strong>DynamoDB:</strong> Tabela escalável para armazenamento de feedbacks.</li>
+                <li><strong>Lambda:</strong> Funções eficientes para escrita e leitura de dados.</li>
+            </ul>
+            
+            <h4 style="color: var(--aws-orange); margin-top: 20px;">Mensagens Recentes:</h4>
+            <div id="mensagens-container" style="max-height: 300px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
+                <p style="font-size: 0.8em; opacity: 0.6;">Carregando mural...</p>
+            </div>
+        </div>
+        <div class="media">
+            <div class="widget">
+                <input type="text" id="nick" placeholder="Seu Nome">
+                <textarea id="frase" placeholder="Sua mensagem para o DynamoDB..."></textarea>
+                <button onclick="enviarFrase()">Publicar no Mural</button>
+            </div>
+        </div>
+    </div>
+    <a href="https://github.com/FabioSF10/meu-portfolio-aws/tree/main/MuralComDynamoDB" target="_blank" style="color: var(--aws-orange); font-weight: bold; text-decoration: none;">Repositório do Projeto →</a>
+</section>
 
-            try {
-                // CHAME SUA AZURE FUNCTION AQUI
-                // Exemplo: https://sua-funcao.azurewebsites.net/api/ChatTrigger
-                const response = await fetch('SUA_URL_DA_AZURE_FUNCTION_AQUI', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: prompt })
-                });
+<section>
+    <div class="project-grid" style="direction: rtl;">
+        
+        <div class="content" style="direction: ltr;">
+            <h2><i class="fab fa-python"></i> 04. Gerador de CPF Serverless</h2>
+            <h3>Microserviço em Python & AWS Lambda</h3>
+            <p>Desenvolvimento de uma ferramenta utilitária que processa lógica de validação e geração de dados via funções Lambda.</p>
+            <ul>
+                <li><strong>Backend:</strong> Script Python 3.x otimizado para execução rápida.</li>
+                <li><strong>Compute:</strong> Arquitetura Serverless (AWS Lambda) que escala sob demanda.</li>
+                <li><strong>Endpoint:</strong> Gatilho via Lambda Function URL para chamadas diretas.</li>
+            </ul>
+            <a href="https://github.com/FabioSF10/meu-portfolio-aws/tree/main/gerador-cpf" target="_blank" style="color: var(--aws-orange); font-weight: bold; text-decoration: none;">Ver Código no GitHub →</a>
+        </div>
 
-                if (!response.ok) throw new Error('Erro na resposta');
+        <div class="media" style="direction: ltr;">
+            <div class="widget" style="background: #0f172a; border: 1px solid #334155; text-align: center; padding: 30px;">
+                <h3 style="color: var(--aws-orange); margin-top: 0;">Validador de Dados</h3>
+                <div id="cpf-display" style="font-size: 2.2rem; margin: 25px 0; font-family: 'Courier New', monospace; color: white; letter-spacing: 2px;">
+                    000.000.000-00
+                </div>
+                <button onclick="chamarLambda()" id="btn-gerar" style="width: 100%; background-color: #238636; color: white; padding: 12px; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; transition: 0.3s;">
+                    <i class="fas fa-sync"></i> Gerar via AWS Lambda
+                </button>
+                <p style="font-size: 0.7em; margin-top: 15px; opacity: 0.6;">*Geração efetuada em tempo real no servidor AWS.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-                const data = await response.json();
-                
-                // Ajuste 'data.reply' conforme o nome do campo que sua função retorna
-                loadingMsg.innerText = data.reply || data.answer || "Recebi sua mensagem!";
+    <section style="margin-top: 50px;">
+    <div class="project-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        
+        <div class="content card-clicavel" 
+             onclick="window.open('https://github.com/FabioSF10/meu-portfolio-aws/tree/main/criacao-ec2-ssh', '_blank')"
+             style="background: #1e293b; padding: 25px; border-radius: 12px; border-top: 4px solid #ff9900; cursor: pointer; transition: transform 0.3s, border-color 0.3s;">
+            
+            <h2 style="font-size: 1.4em; margin-bottom: 15px;">
+                <i class="fas fa-server"></i> 05. Provisionamento Linux EC2
+            </h2>
+            <p style="font-size: 0.9em; opacity: 0.9;">
+                Implementação de servidores virtuais na nuvem utilizando <strong>Amazon EC2</strong>. Foco em administração remota e segurança de borda.
+            </p>
+            <ul style="font-size: 0.85em; margin: 15px 0; padding-left: 18px; color: #cbd5e1;">
+                <li>Configuração de Security Groups (Firewall de Redes).</li>
+                <li>Gerenciamento de chaves .pem para acesso criptografado.</li>
+                <li>Administração Linux via terminal SSH.</li>
+            </ul>
+            <span style="color: #ff9900; font-weight: bold; font-size: 0.9em;">Documentação Técnica →</span>
+        </div>
 
-            } catch (error) {
-                loadingMsg.innerText = "Ops! Tive um problema ao conectar. Tente novamente.";
-                console.error('Erro:', error);
-            }
-        }
+        <div class="content card-clicavel" 
+             onclick="window.open('https://github.com/FabioSF10/meu-portfolio-aws/tree/main/teste-conectividade-icmp', '_blank')"
+             style="background: #1e293b; padding: 25px; border-radius: 12px; border-top: 4px solid #ff9900; cursor: pointer; transition: transform 0.3s, border-color 0.3s;">
+            
+            <h2 style="font-size: 1.4em; margin-bottom: 15px;">
+                <i class="fas fa-network-wired"></i> 06. Conectividade Híbrida (ICMP)
+            </h2>
+            <p style="font-size: 0.9em; opacity: 0.9;">
+                Laboratório de validação de conectividade entre ambientes locais (Windows) e instâncias na Nuvem (Linux) via protocolo ICMP.
+            </p>
+            <ul style="font-size: 0.85em; margin: 15px 0; padding-left: 18px; color: #cbd5e1;">
+                <li>Habilitação de tráfego de diagnóstico no Security Group.</li>
+                <li>Validação de latência entre ambiente On-premise e AWS.</li>
+                <li>Teste de "Ping" funcional para verificação de rotas.</li>
+            </ul>
+            <span style="color: #ff9900; font-weight: bold; font-size: 0.9em;">Ver Laboratório →</span>
+        </div>
 
-        // Eventos de clique e teclado
-        sendBtn.onclick = handleChat;
-        chatInput.onkeypress = (e) => {
-            if (e.key === 'Enter') handleChat();
-        };
-    </script>
+    </div>
+</section>
+
+<style>
+    .card-clicavel:hover {
+        transform: translateY(-5px);
+        border-top-color: #ffffff !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+</style>
+    
+<footer>
+   <div class="social-footer">
+    <a href="https://www.linkedin.com/in/fabio-figueiredo-5601041b2/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://github.com/FabioSF10/meu-portfolio-aws" target="_blank"><i class="fab fa-github"></i></a>
+    
+    <button onclick="copiarEmail()" id="btn-email" style="background: none; border: none; color: var(--text); cursor: pointer; font-size: 1.5em; vertical-align: middle; transition: 0.3s; position: relative;">
+        <i class="fas fa-envelope" id="icone-email"></i>
+        <span id="aviso-copiado" style="display: none; position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: #ff9900; color: #232f3e; padding: 5px 10px; border-radius: 4px; font-size: 0.5em; font-family: sans-serif; white-space: nowrap; font-weight: bold;">E-mail copiado!</span>
+    </button>
+</div>
+    <p style="margin-top: 20px;">Fabio Stefano de Figueiredo | Analista de Infraestrutura de TI</p>
+    <p>São Paulo, Brasil | &copy; 2026</p>
+</footer>
 
 </body>
 </html>
